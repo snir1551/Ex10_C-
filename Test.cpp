@@ -21,9 +21,7 @@ TEST_CASE("Test Range")
         ++j;
     }
     CHECK(j == 4);
-    CHECK(j != 5);
-    CHECK(j != 3);
-    CHECK(j != 0);
+
 
     j = 0;
     result.clear();
@@ -35,10 +33,7 @@ TEST_CASE("Test Range")
         ++j;
     }
     CHECK(j == 21);
-    CHECK(j != 20);
-    CHECK(j != 22);
-    CHECK(j != 19);
-    CHECK(j != 0);
+
     j = 0;
     result.clear();
     result = {5,5};
@@ -61,9 +56,7 @@ TEST_CASE("Test Accumulate")
         ++j;
     }
     CHECK(j == 6);
-    CHECK(j != 7);
-    CHECK(j != 5);
-    CHECK(j != 0);
+
     
     vector<int> vec = {3,4,5,6,7,8};
     j = 0;
@@ -73,9 +66,7 @@ TEST_CASE("Test Accumulate")
         ++j;
     }
     CHECK(j == 6);
-    CHECK(j != 7);
-    CHECK(j != 5);
-    CHECK(j != 0);
+
     j=0;
     vector<string> result2 = {"I","ILove","ILoveC++"};
     vector<string> vecString = {"I","Love","C++"};
@@ -85,9 +76,7 @@ TEST_CASE("Test Accumulate")
         ++j;
     }
     CHECK(j == 3);
-    CHECK(j != 4);
-    CHECK(j != 2);
-    CHECK(j != 0);
+
     j=0;
     vector<int> result3 = {3,12,60,360,2520,20160};
 
@@ -97,9 +86,7 @@ TEST_CASE("Test Accumulate")
         ++j;
     }
     CHECK(j == 6);
-    CHECK(j != 7);
-    CHECK(j != 5);
-    CHECK(j != 0);
+
     j=0;
     result3.clear();
 
@@ -110,9 +97,7 @@ TEST_CASE("Test Accumulate")
         ++j;
     }
     CHECK(j == 6);
-    CHECK(j != 7);
-    CHECK(j != 5);
-    CHECK(j != 0);
+
     j=0;
     vector<int> set1 = {3,12,60,360,2520,20160};
     set<int> myset = {3,4,5,6,7,8};
@@ -122,9 +107,7 @@ TEST_CASE("Test Accumulate")
         ++j;
     }
     CHECK(j == 6);
-    CHECK(j != 7);
-    CHECK(j != 5);
-    CHECK(j != 0);
+
 
 
 		
@@ -141,15 +124,11 @@ TEST_CASE("Test Filterfalse")
         ++j;
     }
     CHECK(j == 2);
-    CHECK(j != 3);
-    CHECK(j != 1);
-    CHECK(j != 0);
+
 
     result.clear();
     j = 0;
-    CHECK(j != 2);
-    CHECK(j != 3);
-    CHECK(j != 1);
+
     result = {6,8};
     for (auto i: filterfalse([](int i){return i%2!=0;}, range(5,9)) )
     {
@@ -157,9 +136,7 @@ TEST_CASE("Test Filterfalse")
         ++j;
     }
     CHECK(j == 2);
-    CHECK(j != 3);
-    CHECK(j != 1);
-    CHECK(j != 0);
+
 
     result.clear();
     j = 0;
@@ -171,13 +148,11 @@ TEST_CASE("Test Filterfalse")
         ++j;
     }
     CHECK(j == 5);
-    CHECK(j != 6);
-    CHECK(j != 4);
-    CHECK(j != 0);
+
 
     result.clear();
     j = 0;
-    result = {-20,-2,-1,0,-99};
+    result = {-99,-20,-2,-1,0};
     set<int> myset2 = {-20,-2,-1,0,1,3,4,5,6,7,8,20,30,40,50,60,70,72,80,90,-99,100};
     for (auto i: filterfalse([](int i){return i > 0;}, myset2) )
     {
@@ -185,9 +160,33 @@ TEST_CASE("Test Filterfalse")
         ++j;
     }
     CHECK(j == 5);
-    CHECK(j != 21);
-    CHECK(j != 23);
-    CHECK(j != 0);
+
+    result.clear();
+    j = 0;
+    result = {-99};
+    set<int> myset3 = {-20,-2,-1,0,1,3,4,5,6,7,8,20,30,40,50,60,70,72,80,90,-99,100};
+    for (auto i: filterfalse([](int i){return i > -99;}, myset2) )
+    {
+        CHECK(i == result.at(j));
+        ++j;
+    }
+    CHECK(j == 1);
+
+
+    result.clear();
+    j = 0;
+    result = {};
+    set<int> myset4 = {-20,-2,-1,0,1,3,4,5,6,7,8,20,30,40,50,60,70,72,80,90,-99,100};
+    for (auto i: filterfalse([](int i){return i >= -99;}, myset2) )
+    {
+        CHECK(0 == 1); // not need to get in
+        ++j;
+    }
+    CHECK(j == 0);
+
+
+    
+
 }
 
 
@@ -202,17 +201,7 @@ TEST_CASE("Test Compress")
         ++j;
     }
     CHECK(j == 1);
-    CHECK(j != 7);
-    CHECK(j != 6);
-    CHECK(j != 5);
-    CHECK(j != 4);
-    CHECK(j != 2);
-    CHECK(j != -1);
-    CHECK(j != 0);
-    CHECK(j != 9);
-    CHECK(j != 10);
-    CHECK(j != 11);
-    CHECK(j != 12);
+
     result.clear();
     j = 0;
 
@@ -226,42 +215,14 @@ TEST_CASE("Test Compress")
         ++j;
     }
     CHECK(j == 4);
-    CHECK(j != 5);
-    CHECK(j != 6);
-    CHECK(j != 5);
-    CHECK(j != 3);
-    CHECK(j != 2);
-    CHECK(j != 1);
-    CHECK(j != -1);
-    CHECK(j != 0);
-    CHECK(j != 9);
-    CHECK(j != 10);
-    CHECK(j != 11);
-    CHECK(j != 12);
+
 
     result.clear();
     j = 0;
 
     vector<char> resultString = {'I','L', 'o', 'v', 'e', 'C', '+','+'};
     j = 0;
-    CHECK(j != 7);
-    CHECK(j != 6);
-    CHECK(j != 5);
-    CHECK(j != 4);
-    CHECK(j != 3);
-    CHECK(j != 2);
-    CHECK(j != 9);
-    CHECK(j != 10);
-    CHECK(j != 11);
-    CHECK(j != 12);
-    CHECK(j != 13);
-    CHECK(j != 14);
-    CHECK(j != 15);
-    CHECK(j != 16);
-    CHECK(j != 17);
-    CHECK(j != 18);
-    CHECK(j != 19);
-    CHECK(j != 20);
+
     vector<bool> myVectorBool {true,false,false,false,true,true,true,true,true,true,true};
     
     for (auto i: compress(string("InotLoveC++"), myVectorBool))
@@ -270,27 +231,20 @@ TEST_CASE("Test Compress")
         ++j;
     }
     CHECK(j == 8);
-    CHECK(j != 7);
-    CHECK(j != 6);
-    CHECK(j != 5);
-    CHECK(j != 4);
-    CHECK(j != 3);
-    CHECK(j != 2);
-    CHECK(j != 1);
-    CHECK(j != -1);
-    CHECK(j != 0);
-    CHECK(j != 9);
-    CHECK(j != 10);
-    CHECK(j != 11);
-    CHECK(j != 12);
-    CHECK(j != 13);
-    CHECK(j != 14);
-    CHECK(j != 15);
-    CHECK(j != 16);
-    CHECK(j != 17);
-    CHECK(j != 18);
-    CHECK(j != 19);
-    CHECK(j != 20);
+
+
+
+    j = 0;
+
+    vector<bool> myVectorBool2 {false,false,false,false,false,false,false,false,false,false,false};
+    
+    for (auto i: compress(string("InotLoveC++"), myVectorBool2))
+    {
+        CHECK(0==1); // not need to get in
+        ++j;
+    }
+    CHECK(j == 0);
+
 
 
     result.clear();
