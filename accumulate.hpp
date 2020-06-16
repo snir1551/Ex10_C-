@@ -5,7 +5,7 @@
 namespace itertools
 {
 
-    class plus
+    struct add
     {
         template<typename T>
         T operator()(T a, T b)
@@ -14,63 +14,81 @@ namespace itertools
         }
     };
 
-    class iterator1
+
+    template<typename Collection, typename Func>
+    class Accumulate
     {
-        private:
-            int _data;
-    
         public:
-        iterator1(int data): _data(data)
-        {
+            template <typename ArgumentIterator, typename ValueType> 
+            class iterator
+            {
+                private:
+                    ArgumentIterator _argIterator;
+                    ValueType _accumulatedValue;
+                    Func _func;
+                    bool _valueInitialized;
 
-        }
-        iterator1& operator++()
-        {
-            ++(this->_data);
-            return *this;
-        }
-        const bool operator!=(const iterator1& it) const
-        {
-            return (it._data != _data);
-        }
-        const int operator*() const
-        {
-            return this->_data;
-        }
-        const std::ostream& operator<<(const iterator1& it) const
-        {
-            return std::cout << it._data;
-        }
-    
+                public:
+                    iterator(const ArgumentIterator& argIterator, const Func& func)
+                        : _argIterator(argIterator), _func(func), _valueInitialized(false)
+                    {
+                        
+                    }
+                    void operator++()
+                    {      
+                        if(!_valueInitialized)
+                        {
+                        
+                            _valueInitialized = true;
+                            _accumulatedValue = *_argIterator;
+                        } 
+                        else
+                        {
+                            _accumulatedValue = _func(_accumulatedValue, *_argIterator);
+                        }
+                          
+                       ++_argIterator;
+                    }
+
+                    bool operator!=(const iterator& it) const
+                    {
+                        return (_argIterator != it._argIterator);
+                    }
+
+                    ValueType operator*()
+                    {
+                        return _valueInitialized 
+                         ? _func(_accumulatedValue, *_argIterator)
+                         : *_argIterator;
+                    }
+            };
+
+        private:
+            const Collection& collection;
+            Func func;
+
+        public:
+            Accumulate(const Collection& collection, const Func& func): collection(collection), func(func)
+            {
+
+            }
+
+            iterator<decltype(collection.begin()), typename Collection::value_type> begin()
+            {
+                return iterator<decltype(collection.begin()), typename Collection::value_type>
+                         (collection.begin(), func);
+            }
+
+            iterator<decltype(collection.end()), typename Collection::value_type> end()
+            {
+                return iterator<decltype(collection.end()), typename Collection::value_type>(collection.end(), func);
+            }
     };
- 
-    class accumulate
+
+    template <typename Collection, typename Func = add>
+    Accumulate<Collection, Func> accumulate(const Collection& collection, const Func& func = add())
     {
-        private:
-            int _begin;
-            int _end;
-            int _num;
-
-        public:
-
-
-            template<typename Collection, typename Func = plus>
-            accumulate(Collection collection, Func fun = plus()):_begin(*(collection.begin())), _end(*(collection.end()))
-            {
-                
-            }
-
-
-            iterator1 begin()
-            {
-                return iterator1(_begin);
-            }
-            iterator1 end()
-            {
-                return iterator1(_end);
-            }
-    };
-
-
+        return Accumulate<Collection, Func>(collection, func);
+    }
 }
 #endif

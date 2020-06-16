@@ -3,33 +3,28 @@
 #include <iostream>
 namespace itertools
 {
-
+    //iterator class
     class iterator
     {
         private:
-            int _num;
+            int _num; //parameter
 
         public:
         iterator(int num): _num(num)
         {
 
         }
-        iterator& operator++()
+        void operator++()
         {
             ++(this->_num);
-            return *this;
         }
-        const bool operator!=(const iterator& it) const
+        bool operator!=(const iterator& it) const
         {
             return (it._num != _num);
         }
-        const int operator*() const
+        int operator*() const
         {
             return this->_num;
-        }
-        const std::ostream& operator<<(const iterator& it) const
-        {
-            return std::cout << it._num;
         }
 
 
@@ -40,16 +35,18 @@ namespace itertools
             int _begin, _end;
         
         public:
+            typedef int value_type;
+
             range(int begin,int end): _begin(begin), _end(end)
             {
                 
             }
             
-            iterator begin()
+            iterator begin() const
             {
                 return iterator(_begin);
             }
-            iterator end()
+            iterator end() const
             {
                 return iterator(_end);
             }
